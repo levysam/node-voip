@@ -1,0 +1,29 @@
+version: '3.7'
+services:
+  ana-microservice-nodejs:
+    build:
+      context: .
+      dockerfile: docker/dev/alpine/Dockerfile
+    container_name: ana-microservice-nodejs
+    ports:
+      - "3000:3000"
+    depends_on:
+      - ana-microservice-mysql
+    volumes:
+      - ./:/usr/src/
+      - /usr/src/node_modules
+
+  ana-microservice-mysql:
+    image: mysql:8.0
+    container_name: ana-microservice-mysql
+    command: --default-authentication-plugin=mysql_native_password
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_DATABASE=ana
+      - MYSQL_ROOT_PASSWORD=root
+    volumes:
+      - ./mysql-db:/docker-entrypoint-initdb.d
+      - ./storage/.db:/var/lib/mysql
+    security_opt:
+      - seccomp:unconfined

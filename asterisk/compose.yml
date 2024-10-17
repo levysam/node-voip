@@ -1,0 +1,7 @@
+services:
+  asterisk:
+    build: .
+    platform: linux/amd64
+    volumes:
+      - ".:/app"
+      - "./configs:/etc/asterisk/"

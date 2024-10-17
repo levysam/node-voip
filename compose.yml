@@ -1,0 +1,23 @@
+services:
+  asterisk:
+    build: asterisk
+    platform: linux/amd64
+    volumes:
+      - "./asterisk:/app"
+      - "./asterisk/configs/basic-pbx:/etc/asterisk/"
+    ports:
+      - "8088:8088"
+      - "8089:8089"
+      - "5038:5038"
+
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: asterisk
+
+networks:
+  default:
+    name: voip-network
